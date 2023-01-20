@@ -29,20 +29,21 @@ const signInController = async function (req, res){
             if(user){
                 if(user.password == password){
                     const token = jwt.sign({data: user['_id']}, secretKey);
-                    console.log(token);
+                    // console.log(token);
                     res.cookie("JWT",token)
-                    res.send("user logged in");
+                    res.status(200).json({user});
                 }else{
-                    res.send("credentials do not match");
+                    res.status(400).json({result : "credentials do not match"});
                 }
             }else{
-                res.send("no user found ")
+                res.status(404).json({result:"no user found "})
             }
         }else{
-            res.send("kindly enter correct email and password.")
+            res.status(400).json({result:"kindly enter correct email and password."})
         }
     }catch(err){
         console.log(err.message);
+        res.status(500).json({result:"err.message"})
     }
 }
 

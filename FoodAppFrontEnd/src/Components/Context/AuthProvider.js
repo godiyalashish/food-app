@@ -30,15 +30,17 @@ function AuthProvider({ children }) {
         }
     }
     async function login(email, password) {
+        let flag = true;
         try {
             setLoading(true);
             const res = await axios.post("/api/v1/auth/signin", {
                 email: email,
                 password: password
             });
+            userSet(res.data.user);
             setLoading(false);
             console.log("40",res.data);
-            userSet(res.data.user);
+            return flag;
         }
         catch (err) {
             console.log(err);
